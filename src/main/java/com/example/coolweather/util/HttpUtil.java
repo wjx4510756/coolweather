@@ -10,7 +10,7 @@ import java.net.URL;
  * Created by wjx4510756 on 2016/4/13.
  */
 public class HttpUtil {
-    public static void sendHttpRequest(final String address,final HttpCallBackListern listern){
+    public static void sendHttpRequest(final String address,final HttpCallBackListener listener){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -27,11 +27,11 @@ public class HttpUtil {
                     String line;
                     while ((line = reader.readLine())!= null)
                         response.append(line);
-                    if (listern != null)
-                        listern.onFinish(response.toString());
+                    if (listener != null)
+                        listener.onFinish(response.toString());
                 } catch (Exception e) {
-                    if (listern != null)
-                        listern.onError(e);
+                    if (listener != null)
+                        listener.onError(e);
                 }
                 finally {
                     if (connection != null)

@@ -35,7 +35,7 @@ public class CoolWeatherDB {
     /*
     获取CoolWeatherDB实例，保证唯一性
      */
-    public synchronized static CoolWeatherDB getCoolWeatherDB(Context context) {
+    public synchronized static CoolWeatherDB getInstance(Context context) {
         if (coolWeatherDB == null) {
             coolWeatherDB = new CoolWeatherDB(context);
         }
