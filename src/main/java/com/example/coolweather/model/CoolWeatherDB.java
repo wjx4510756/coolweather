@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Created by wjx4510756 on 2016/4/13.
+ * 数据库操作
  */
 public class CoolWeatherDB {
     /*
