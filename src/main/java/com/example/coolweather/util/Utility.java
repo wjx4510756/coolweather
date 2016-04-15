@@ -1,11 +1,19 @@
 package com.example.coolweather.util;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.example.coolweather.model.City;
 import com.example.coolweather.model.CoolWeatherDB;
-import com.example.coolweather.model.Country;
+import com.example.coolweather.model.County;
 import com.example.coolweather.model.Province;
+
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by wjx4510756 on 2016/4/15.
@@ -60,13 +68,13 @@ public class Utility {
     public synchronized static boolean handleCountriesResponse(CoolWeatherDB coolWeatherDB,String response,int cityId){
         if (!TextUtils.isEmpty(response))
         {
-            String[] allCountries = response.split(",");
-            if (allCountries != null && allCountries.length > 0){
-                for (String c:allCountries) {
+            String[] allCounties = response.split(",");
+            if (allCounties != null && allCounties.length > 0){
+                for (String c:allCounties) {
                     String[] array = c.split("\\|");
-                    Country country = new Country();
-                    country.setCountryCode(array[0]);
-                    country.setCountryName(array[1]);
+                    County country = new County();
+                    country.setCountyCode(array[0]);
+                    country.setCountyName(array[1]);
                     country.setCityId(cityId);
                     coolWeatherDB.saveCountry(country);
                 }
@@ -74,5 +82,41 @@ public class Utility {
             }
         }
         return false;
+    }
+    /*
+    解析服务器返回的JSON数据，并将解析出来的数据存到本地
+     */
+    public static void handleWeatherResponse(Context context,String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONObject weatherInfo = jsonObject.getJSONObject("weatherinfo");
+            String cityName = weatherInfo.getString("city");
+            String weatherCode = weatherInfo.getString("cityid");
+            String temp1 = weatherInfo.getString("temp1");
+            String temp2 = weatherInfo.getString("temp2");
+            String weatherDesp = weatherInfo.getString("weather");
+            String publishTime = weatherInfo.getString("ptime");
+            saveWeatherInfo(context,cityName,weatherCode,temp1,temp2,weatherDesp,publishTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    将服务器返回的数据存储到SharedPreferences文件中
+     */
+    private static void saveWeatherInfo(Context context, String cityName, String weatherCode, String temp1, String temp2, String weatherDesp, String publishTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日", Locale.CHINA);
+        SharedPreferences.Editor editor = context.getSharedPreferences("weather",context.MODE_PRIVATE).edit();
+        editor.putBoolean("city_selected",true)
+                .putString("city_name",cityName)
+                .putString("weather_code",weatherCode)
+                .putString("temp1",temp1)
+                .putString("temp2",temp2)
+                .putString("weather_desp",weatherDesp)
+                .putString("publish_time",publishTime)
+                .putString("current_date",sdf.format(new Date()));
+        editor.commit();
+
     }
 }

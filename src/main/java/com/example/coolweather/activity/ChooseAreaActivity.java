@@ -2,6 +2,8 @@ package com.example.coolweather.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,7 +16,7 @@ import android.widget.Toast;
 import com.example.coolweather.R;
 import com.example.coolweather.model.City;
 import com.example.coolweather.model.CoolWeatherDB;
-import com.example.coolweather.model.Country;
+import com.example.coolweather.model.County;
 import com.example.coolweather.model.Province;
 import com.example.coolweather.util.HttpCallBackListener;
 import com.example.coolweather.util.HttpUtil;
@@ -31,7 +33,7 @@ public class ChooseAreaActivity extends Activity {
 
     public static final int LEVEL_PROVINCE = 0;
     public static final int LEVEL_CITY = 1;
-    public static final int LEVEL_COUNTRY = 2;
+    public static final int LEVEL_COUNTY = 2;
 
     private ProgressDialog progressDialog;
     private TextView titleText;
@@ -44,7 +46,7 @@ public class ChooseAreaActivity extends Activity {
     //市列表
     private List<City> cityList;
     //县列表
-    private List<Country> countryList;
+    private List<County> countyList;
     //选中的省份
     private Province selectedProvince;
     //选中的城市
@@ -58,6 +60,13 @@ public class ChooseAreaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = getSharedPreferences("weather",MODE_PRIVATE);
+        if (preferences.getBoolean("city_selected",false)){
+            Intent intent = new Intent(this,WeatherActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
         setContentView(R.layout.choose_area);
         listView = (ListView) findViewById(R.id.list_view);
         titleText = (TextView) findViewById(R.id.title_text);
@@ -72,7 +81,13 @@ public class ChooseAreaActivity extends Activity {
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
-                    queryCountries();
+                    queryCounties();
+                }else if (currentLevel == LEVEL_COUNTY){
+                    String countyCode = countyList.get(position).getCountyCode();
+                    Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+                    intent.putExtra("county_code",countyCode);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -118,17 +133,17 @@ public class ChooseAreaActivity extends Activity {
     /*
         查询选中市内所有的县，优先从数据库查询，如果没有就去服务器上查询
        */
-    private void queryCountries() {
-        countryList = coolWeatherDB.loadCountries(selectedCity.getId());
-        if (countryList.size() > 0) {
+    private void queryCounties() {
+        countyList = coolWeatherDB.loadCounties(selectedCity.getId());
+        if (countyList.size() > 0) {
             datalist.clear();
-            for (Country country : countryList) {
-                datalist.add(country.getCountryName());
+            for (County country : countyList) {
+                datalist.add(country.getCountyName());
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
             titleText.setText(selectedCity.getCityName());
-            currentLevel = LEVEL_COUNTRY;
+            currentLevel = LEVEL_COUNTY;
         } else
             queryFromServer(selectedCity.getCityCode(), "country");
     }
@@ -163,7 +178,7 @@ public class ChooseAreaActivity extends Activity {
                             else if (type.equals("city"))
                                 queryCities();
                             else if (type.equals("country"))
-                                queryCountries();
+                                queryCounties();
                         }
                     });
                 }
@@ -202,7 +217,7 @@ public class ChooseAreaActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (currentLevel == LEVEL_COUNTRY)
+        if (currentLevel == LEVEL_COUNTY)
             queryCities();
         else if (currentLevel == LEVEL_CITY)
             queryProvinces();
