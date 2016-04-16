@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,12 +29,15 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
     private TextView temp1;
     private TextView temp2;
     private TextView currentData;
+    private TextView loading;
     private Button switchCity;
     private Button refreshWeather;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.weather_layout);
         weatherInfoLayout = (LinearLayout) findViewById(R.id.weather_info_layout);
         cityName = (TextView) findViewById(R.id.city_name);
@@ -41,6 +45,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         weatherDesp = (TextView) findViewById(R.id.weather_desp);
         temp1 = (TextView) findViewById(R.id.temp1);
         temp2 = (TextView) findViewById(R.id.temp2);
+        loading = (TextView) findViewById(R.id.loading);
         currentData = (TextView) findViewById(R.id.current_data);
         switchCity = (Button) findViewById(R.id.switch_city);
         refreshWeather = (Button) findViewById(R.id.refresh_weather);
@@ -48,7 +53,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         refreshWeather.setOnClickListener(this);
         String countyCode = getIntent().getStringExtra("county_code");
         if (!TextUtils.isEmpty(countyCode)){
-            publishTime.setText("同步中...");
+            loading.setText("同步中...");
             weatherInfoLayout.setVisibility(View.INVISIBLE);
             cityName.setVisibility(View.INVISIBLE);
             queryWeatherCode(countyCode);
@@ -103,7 +108,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        publishTime.setText("同步失败");
+                        loading.setText("同步失败");
                     }
                 });
             }
@@ -121,6 +126,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         weatherDesp.setText(preferences.getString("weather_desp",""));
         publishTime.setText(preferences.getString("publish_time","")+"发布");
         currentData.setText(preferences.getString("current_date",""));
+        loading.setVisibility(View.INVISIBLE);
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityName.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, AutoUpdateService.class);
@@ -131,13 +137,16 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.switch_city:
+                loading.setVisibility(View.VISIBLE);
+                loading.setText("正在跳转...");
                 Intent intent = new Intent(this,ChooseAreaActivity.class);
                 intent.putExtra("from_weather_activity",true);
                 startActivity(intent);
                 finish();
                 break;
             case R.id.refresh_weather:
-                publishTime.setText("同步中...");
+                loading.setVisibility(View.VISIBLE);
+                loading.setText("同步中...");
                 SharedPreferences preferences = getSharedPreferences("weather",MODE_PRIVATE);
                 String weatherCode= preferences.getString("weather_code","");
                 if (!TextUtils.isEmpty(weatherCode)){
