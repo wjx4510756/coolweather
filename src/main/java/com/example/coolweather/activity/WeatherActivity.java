@@ -140,7 +140,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         scDir.setText(dirSC);
         nowTemp.setText(preferences.getString("now_temp","")+"℃");
         nowWeather.setText(preferences.getString("now_weather",""));
-        nowInfo.setVisibility(View.VISIBLE);
+        nowInfo.setVisibility(View.INVISIBLE);
         loading.setVisibility(View.INVISIBLE);
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityName.setVisibility(View.VISIBLE);
