@@ -1,4 +1,4 @@
-package com.example.coolweather.model;
+package com.example.coolweather.javaBean;
 
 /**
  * Created by wjx4510756 on 2016/4/13.

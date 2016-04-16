@@ -14,10 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coolweather.R;
-import com.example.coolweather.model.City;
+import com.example.coolweather.javaBean.City;
 import com.example.coolweather.model.CoolWeatherDB;
-import com.example.coolweather.model.County;
-import com.example.coolweather.model.Province;
+import com.example.coolweather.javaBean.County;
+import com.example.coolweather.javaBean.Province;
 import com.example.coolweather.util.HttpCallBackListener;
 import com.example.coolweather.util.HttpUtil;
 import com.example.coolweather.util.Utility;

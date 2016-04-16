@@ -43,17 +43,6 @@
         android:layout_weight="1"
         android:background="@drawable/background3">
 
-        <TextView
-            android:id="@+id/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="60dp"
-            android:textColor="@color/textColor"
-            android:textSize="30sp" />
-
         <LinearLayout
             android:id="@+id/weather_info_layout"
             android:layout_width="wrap_content"
@@ -63,6 +52,7 @@
 
             <TextView
                 android:id="@+id/current_data"
+
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:gravity="center"
@@ -71,6 +61,7 @@
 
             <TextView
                 android:id="@+id/weather_desp"
+
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
@@ -79,6 +70,7 @@
                 android:textSize="40dp" />
 
             <LinearLayout
+
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
@@ -86,6 +78,7 @@
 
                 <TextView
                     android:id="@+id/temp1"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -93,6 +86,7 @@
                     android:textSize="40sp" />
 
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -104,6 +98,7 @@
 
                 <TextView
                     android:id="@+id/temp2"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -113,16 +108,74 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/publish_text"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/now_weather_info"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:textColor="#000000"
-            android:textSize="18sp" />
+            android:layout_below="@+id/weather_info_layout"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/now_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="当前天气状况"
+                android:textColor="@color/textColor"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/now_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textColor="@color/textColor"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/now_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textColor="@color/textColor"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/now_sc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="5dp"
+                android:textColor="@color/textColor"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/now_weather_info">
+
+            <TextView
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/textColor"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/publish_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

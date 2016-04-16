@@ -33,6 +33,11 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
     private Button switchCity;
     private Button refreshWeather;
 
+    private TextView nowInfo;
+    private TextView scDir;
+    private TextView nowTemp;
+    private TextView nowWeather;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +54,16 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         currentData = (TextView) findViewById(R.id.current_data);
         switchCity = (Button) findViewById(R.id.switch_city);
         refreshWeather = (Button) findViewById(R.id.refresh_weather);
+        scDir = (TextView) findViewById(R.id.now_sc);
+        nowTemp = (TextView) findViewById(R.id.now_temp);
+        nowWeather = (TextView) findViewById(R.id.now_weather);
+        nowInfo = (TextView) findViewById(R.id.now_info);
         switchCity.setOnClickListener(this);
         refreshWeather.setOnClickListener(this);
         String countyCode = getIntent().getStringExtra("county_code");
         if (!TextUtils.isEmpty(countyCode)){
             loading.setText("同步中...");
+            nowInfo.setVisibility(View.INVISIBLE);
             weatherInfoLayout.setVisibility(View.INVISIBLE);
             cityName.setVisibility(View.INVISIBLE);
             queryWeatherCode(countyCode);
@@ -126,6 +136,11 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         weatherDesp.setText(preferences.getString("weather_desp",""));
         publishTime.setText(preferences.getString("publish_time","")+"发布");
         currentData.setText(preferences.getString("current_date",""));
+        String dirSC = preferences.getString("dir","")+"  "+preferences.getString("sc","")+"级";
+        scDir.setText(dirSC);
+        nowTemp.setText(preferences.getString("now_temp","")+"℃");
+        nowWeather.setText(preferences.getString("now_weather",""));
+        nowInfo.setVisibility(View.VISIBLE);
         loading.setVisibility(View.INVISIBLE);
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityName.setVisibility(View.VISIBLE);

@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.coolweather.db.CoolWeatherOpenHelper;
+import com.example.coolweather.javaBean.City;
+import com.example.coolweather.javaBean.County;
+import com.example.coolweather.javaBean.Province;
 
 import java.util.ArrayList;
 import java.util.List;
