@@ -3,12 +3,14 @@ package com.example.coolweather.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.coolweather.model.City;
 import com.example.coolweather.model.CoolWeatherDB;
 import com.example.coolweather.model.County;
 import com.example.coolweather.model.Province;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -89,13 +91,24 @@ public class Utility {
     public static void handleWeatherResponse(Context context,String response){
         try {
             JSONObject jsonObject = new JSONObject(response);
-            JSONObject weatherInfo = jsonObject.getJSONObject("weatherinfo");
-            String cityName = weatherInfo.getString("city");
-            String weatherCode = weatherInfo.getString("cityid");
-            String temp1 = weatherInfo.getString("temp1");
-            String temp2 = weatherInfo.getString("temp2");
-            String weatherDesp = weatherInfo.getString("weather");
-            String publishTime = weatherInfo.getString("ptime");
+            JSONArray info1 = jsonObject.optJSONArray("HeWeather data service 3.0");
+            JSONObject info = info1.getJSONObject(0);
+
+            JSONObject basic = info.getJSONObject("basic");
+            String cityName = basic.getString("city");
+            String weatherCode = basic.getString("id");
+
+            JSONObject update = basic.getJSONObject("update");
+            String publishTime = update.getString("loc");
+
+            JSONArray dailyForecast = info.optJSONArray("daily_forecast");
+            JSONObject today = dailyForecast.getJSONObject(0);
+            JSONObject cond = today.getJSONObject("cond");
+            String weatherDesp = cond.getString("txt_d");
+
+            JSONObject tmp = today.getJSONObject("tmp");
+            String temp1 = tmp.getString("min");
+            String temp2 = tmp.getString("max");
             saveWeatherInfo(context,cityName,weatherCode,temp1,temp2,weatherDesp,publishTime);
         } catch (Exception e) {
             e.printStackTrace();

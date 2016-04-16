@@ -9,24 +9,41 @@
         android:layout_height="50dp"
         android:background="@color/titleColor">
 
+        <Button
+            android:id="@+id/switch_city"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/home" />
+
         <TextView
-            android:text="111"
             android:id="@+id/city_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/textColor"
             android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/refresh_weather"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@mipmap/refresh"
+
+            />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#000000">
+        android:background="#345fed">
 
         <TextView
-            android:text="111"
             android:id="@+id/publish_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +51,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/textColor"
-            android:textSize="28sp" />
+            android:textSize="18sp" />
 
         <LinearLayout
             android:id="@+id/weather_info_layout"

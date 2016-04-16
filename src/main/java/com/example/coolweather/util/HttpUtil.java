@@ -22,7 +22,7 @@ public class HttpUtil {
                     connection.setConnectTimeout(5000);
                     connection.setReadTimeout(5000);
                     InputStream in = connection.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
                     StringBuilder response = new StringBuilder();
                     String line;
                     while ((line = reader.readLine())!= null)
